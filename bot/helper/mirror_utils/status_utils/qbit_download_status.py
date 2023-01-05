@@ -1,19 +1,21 @@
 from time import sleep
 
 from bot import LOGGER, get_client
-from bot.helper.ext_utils.bot_utils import MirrorStatus, get_readable_file_size, get_readable_time, EngineStatus
+from bot.helper.ext_utils.bot_utils import (EngineStatus, MirrorStatus,
+                                            get_readable_file_size,
+                                            get_readable_time)
+
 
 def get_download(client, hash_):
     try:
         return client.torrents_info(torrent_hashes=hash_)[0]
     except Exception as e:
-        LOGGER.error(f'{e}: Qbittorrent, Error while getting torrent info')
+        LOGGER.error(f"{e}: Qbittorrent, Error while getting torrent info")
         client = get_client()
         return get_download(client, hash_)
 
 
 class QbDownloadStatus:
-
     def __init__(self, listener, hash_, seeding=False):
         self.__client = get_client()
         self.__listener = listener
@@ -30,7 +32,7 @@ class QbDownloadStatus:
         Calculates the progress of the mirror (upload or download)
         :return: returns progress in percentage
         """
-        return f'{round(self.__info.progress*100, 2)}%'
+        return f"{round(self.__info.progress*100, 2)}%"
 
     def size_raw(self):
         """
@@ -114,5 +116,5 @@ class QbDownloadStatus:
         if self.status() != MirrorStatus.STATUS_SEEDING:
             LOGGER.info(f"Cancelling Download: {self.__info.name}")
             sleep(0.3)
-            self.__listener.onDownloadError('Download stopped by user!')
+            self.__listener.onDownloadError("Download stopped by user!")
             self.__client.torrents_delete(torrent_hashes=self.__hash, delete_files=True)

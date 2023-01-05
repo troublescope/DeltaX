@@ -1,4 +1,6 @@
-from bot.helper.ext_utils.bot_utils import MirrorStatus, get_readable_file_size, get_readable_time, EngineStatus
+from bot.helper.ext_utils.bot_utils import (EngineStatus, MirrorStatus,
+                                            get_readable_file_size,
+                                            get_readable_time)
 
 
 class TgUploadStatus:
@@ -30,7 +32,7 @@ class TgUploadStatus:
             return 0
 
     def progress(self):
-        return f'{round(self.progress_raw(), 2)}%'
+        return f"{round(self.progress_raw(), 2)}%"
 
     def speed_raw(self):
         """
@@ -39,14 +41,14 @@ class TgUploadStatus:
         return self.__obj.speed
 
     def speed(self):
-        return f'{get_readable_file_size(self.speed_raw())}/s'
+        return f"{get_readable_file_size(self.speed_raw())}/s"
 
     def eta(self):
         try:
             seconds = (self.__size - self.__obj.uploaded_bytes) / self.speed_raw()
-            return f'{get_readable_time(seconds)}'
+            return f"{get_readable_time(seconds)}"
         except ZeroDivisionError:
-            return '-'
+            return "-"
 
     def gid(self) -> str:
         return self.__gid

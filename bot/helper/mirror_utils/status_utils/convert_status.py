@@ -1,4 +1,5 @@
-from bot.helper.ext_utils.bot_utils import MirrorStatus, get_readable_file_size, EngineStatus
+from bot.helper.ext_utils.bot_utils import (EngineStatus, MirrorStatus,
+                                            get_readable_file_size)
 
 
 class ConvertStatus:
@@ -13,10 +14,10 @@ class ConvertStatus:
         return self.__gid
 
     def progress(self):
-        return '0'
+        return "0"
 
     def speed(self):
-        return '0'
+        return "0"
 
     def name(self):
         return self.__name
@@ -25,7 +26,7 @@ class ConvertStatus:
         return get_readable_file_size(self.__size)
 
     def eta(self):
-        return '0s'
+        return "0s"
 
     def status(self):
         return MirrorStatus.STATUS_CONVERTING
@@ -41,9 +42,11 @@ class ConvertStatus:
 
     def source(self):
         reply_to = self.message.reply_to_message
-        return reply_to.from_user.username or reply_to.from_user.id if reply_to and \
-            not reply_to.from_user.is_bot else self.message.from_user.username \
-                or self.message.from_user.id
+        return (
+            reply_to.from_user.username or reply_to.from_user.id
+            if reply_to and not reply_to.from_user.is_bot
+            else self.message.from_user.username or self.message.from_user.id
+        )
 
     def mode(self):
         return self.__listener.mode

@@ -1,8 +1,11 @@
 from time import time
 
 from bot import DOWNLOAD_DIR, LOGGER
-from bot.helper.ext_utils.bot_utils import get_readable_file_size, MirrorStatus, EngineStatus, get_readable_time
+from bot.helper.ext_utils.bot_utils import (EngineStatus, MirrorStatus,
+                                            get_readable_file_size,
+                                            get_readable_time)
 from bot.helper.ext_utils.fs_utils import get_path_size
+
 
 class ExtractStatus:
     def __init__(self, name, size, gid, listener):
@@ -27,10 +30,10 @@ class ExtractStatus:
             return 0
 
     def progress(self):
-        return f'{round(self.progress_raw(), 2)}%'
+        return f"{round(self.progress_raw(), 2)}%"
 
     def speed(self):
-        return f'{get_readable_file_size(self.speed_raw())}/s'
+        return f"{get_readable_file_size(self.speed_raw())}/s"
 
     def name(self):
         return self.__name
@@ -44,9 +47,9 @@ class ExtractStatus:
     def eta(self):
         try:
             seconds = (self.size_raw() - self.processed_bytes()) / self.speed_raw()
-            return f'{get_readable_time(seconds)}'
+            return f"{get_readable_time(seconds)}"
         except:
-            return '-'
+            return "-"
 
     def status(self):
         return MirrorStatus.STATUS_EXTRACTING
@@ -61,10 +64,10 @@ class ExtractStatus:
         return self
 
     def cancel_download(self):
-        LOGGER.info(f'Cancelling Extract: {self.__name}')
+        LOGGER.info(f"Cancelling Extract: {self.__name}")
         if self.__listener.suproc is not None:
             self.__listener.suproc.kill()
-        self.__listener.onUploadError('extracting stopped by user!')
+        self.__listener.onUploadError("extracting stopped by user!")
 
     def eng(self):
         return EngineStatus.STATUS_EXT

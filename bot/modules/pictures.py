@@ -1,17 +1,25 @@
-from os import remove as osremove, mkdir, path as ospath
+from os import mkdir
+from os import path as ospath
+from os import remove as osremove
 from time import sleep
-from telegraph import upload_file
-from telegram.ext import CommandHandler, CallbackQueryHandler
 
-from bot import dispatcher, LOGGER, config_dict, DATABASE_URL
-from bot.helper.telegram_helper.message_utils import sendMessage, editMessage, sendPhoto, deleteMessage, editPhoto
+from telegram.ext import CallbackQueryHandler, CommandHandler
+from telegraph import upload_file
+
+from bot import DATABASE_URL, LOGGER, config_dict, dispatcher
 from bot.helper.ext_utils.bot_utils import handleIndex
-from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.button_build import ButtonMaker
+from bot.helper.telegram_helper.filters import CustomFilters
+from bot.helper.telegram_helper.message_utils import (deleteMessage,
+                                                      editMessage, editPhoto,
+                                                      sendMessage, sendPhoto)
+
 
 def picture_add(update, context):
-    editable = sendMessage("<code>Checking Input ...</code>", context.bot, update.message)
+    editable = sendMessage(
+        "<code>Checking Input ...</code>", context.bot, update.message
+    )
     resm = update.message.reply_to_message
     if resm is not None and resm.text:
         msg_text = resm.text
@@ -19,7 +27,7 @@ def picture_add(update, context):
             pic_add = msg_text.strip()
             editMessage("<b>Adding your Link ...</b>", editable)
     elif resm and resm.photo:
-        if not (resm.photo and resm.photo[-1].file_size <= 5242880*2):
+        if not (resm.photo and resm.photo[-1].file_size <= 5242880 * 2):
             editMessage("This Media is Not Supported! Only Send Photos !!", editable)
             return
         path = "Thumbnails/"
@@ -29,7 +37,7 @@ def picture_add(update, context):
         editMessage("<b>Uploading to telegra.ph Server, Please Wait...</b>", editable)
         sleep(1)
         try:
-            pic_add = f'https://graph.org{upload_file(photo_dir)[0]}'
+            pic_add = f"https://graph.org{upload_file(photo_dir)[0]}"
             LOGGER.info(f"Telegraph Link : {pic_add}")
         except Exception as e:
             LOGGER.error(f"Pictures Error: {e}")
@@ -43,26 +51,39 @@ def picture_add(update, context):
         help_msg += f"\n<code>/addpic" + " {photo}" + "</code>"
         editMessage(help_msg, editable)
         return
-    config_dict['PICS'].append(pic_add)
+    config_dict["PICS"].append(pic_add)
     if DATABASE_URL:
-        DbManger().update_config({'PICS': config_dict['PICS']})
+        DbManger().update_config({"PICS": config_dict["PICS"]})
     sleep(1.5)
-    editMessage(f"<b><i>Successfully Added to Existing Photos Status List!</i></b>\n\n<b>• Total Pics : </b><code>{len(config_dict['PICS'])}</code>", editable)
+    editMessage(
+        f"<b><i>Successfully Added to Existing Photos Status List!</i></b>\n\n<b>• Total Pics : </b><code>{len(config_dict['PICS'])}</code>",
+        editable,
+    )
+
 
 def pictures(update, context):
     user_id = update.message.from_user.id
-    if not config_dict['PICS']:
+    if not config_dict["PICS"]:
         sendMessage("No Photo to Show ! Add by /addpic", context.bot, update.message)
     else:
-        to_edit = sendMessage("Generating Grid of your Images...", context.bot, update.message)
+        to_edit = sendMessage(
+            "Generating Grid of your Images...", context.bot, update.message
+        )
         buttons = ButtonMaker()
         buttons.sbutton("<<", f"pics {user_id} turn -1")
         buttons.sbutton(">>", f"pics {user_id} turn 1")
         buttons.sbutton("Remove Photo", f"pics {user_id} remov 0")
         buttons.sbutton("Close", f"pics {user_id} close")
-        buttons.sbutton("Remove All", f"pics {user_id} removall", 'footer')
+        buttons.sbutton("Remove All", f"pics {user_id} removall", "footer")
         deleteMessage(context.bot, to_edit)
-        sendPhoto(f'🌄 <b>Picture No. : 1 / {len(config_dict["PICS"])}</b>', context.bot, update.message, config_dict['PICS'][0], buttons.build_menu(2))
+        sendPhoto(
+            f'🌄 <b>Picture No. : 1 / {len(config_dict["PICS"])}</b>',
+            context.bot,
+            update.message,
+            config_dict["PICS"][0],
+            buttons.build_menu(2),
+        )
+
 
 def pics_callback(update, context):
     query = update.callback_query
@@ -74,39 +95,41 @@ def pics_callback(update, context):
         return
     if data[2] == "turn":
         query.answer()
-        ind = handleIndex(int(data[3]), config_dict['PICS'])
-        no = len(config_dict['PICS']) - abs(ind+1) if ind < 0 else ind + 1
+        ind = handleIndex(int(data[3]), config_dict["PICS"])
+        no = len(config_dict["PICS"]) - abs(ind + 1) if ind < 0 else ind + 1
         pic_info = f'🌄 <b>Picture No. : {no} / {len(config_dict["PICS"])}</b>'
         buttons = ButtonMaker()
         buttons.sbutton("<<", f"pics {data[1]} turn {ind-1}")
         buttons.sbutton(">>", f"pics {data[1]} turn {ind+1}")
         buttons.sbutton("Remove Photo", f"pics {data[1]} remov {ind}")
         buttons.sbutton("Close", f"pics {data[1]} close")
-        buttons.sbutton("Remove All", f"pics {data[1]} removall", 'footer')
-        editPhoto(pic_info, message, config_dict['PICS'][ind], buttons.build_menu(2))
+        buttons.sbutton("Remove All", f"pics {data[1]} removall", "footer")
+        editPhoto(pic_info, message, config_dict["PICS"][ind], buttons.build_menu(2))
     elif data[2] == "remov":
-        config_dict['PICS'].pop(int(data[3]))
+        config_dict["PICS"].pop(int(data[3]))
         if DATABASE_URL:
-            DbManger().update_config({'PICS': config_dict['PICS']})
+            DbManger().update_config({"PICS": config_dict["PICS"]})
         query.answer("Photo Successfully Deleted", show_alert=True)
-        if len(config_dict['PICS']) == 0:
+        if len(config_dict["PICS"]) == 0:
             query.message.delete()
-            sendMessage("No Photo to Show ! Add by /addpic", context.bot, update.message)
+            sendMessage(
+                "No Photo to Show ! Add by /addpic", context.bot, update.message
+            )
             return
-        ind = int(data[3])+1
-        ind = len(config_dict['PICS']) - abs(ind) if ind < 0 else ind
+        ind = int(data[3]) + 1
+        ind = len(config_dict["PICS"]) - abs(ind) if ind < 0 else ind
         pic_info = f'🌄 <b>Picture No. : {ind+1} / {len(config_dict["PICS"])}</b>'
         buttons = ButtonMaker()
         buttons.sbutton("<<", f"pics {data[1]} turn {ind-1}")
         buttons.sbutton(">>", f"pics {data[1]} turn {ind+1}")
         buttons.sbutton("Remove Photo", f"pics {data[1]} remov {ind}")
         buttons.sbutton("Close", f"pics {data[1]} close")
-        buttons.sbutton("Remove All", f"pics {data[1]} removall", 'footer')
-        editPhoto(pic_info, message, config_dict['PICS'][ind], buttons.build_menu(2))
-    elif data[2] == 'removall':
-        config_dict['PICS'].clear()
+        buttons.sbutton("Remove All", f"pics {data[1]} removall", "footer")
+        editPhoto(pic_info, message, config_dict["PICS"][ind], buttons.build_menu(2))
+    elif data[2] == "removall":
+        config_dict["PICS"].clear()
         if DATABASE_URL:
-            DbManger().update_config({'PICS': config_dict['PICS']})
+            DbManger().update_config({"PICS": config_dict["PICS"]})
         query.answer(text="All Photos Successfully Deleted", show_alert=True)
         query.message.delete()
         sendMessage("No Photo to Show ! Add by /addpic", context.bot, update.message)
@@ -116,10 +139,12 @@ def pics_callback(update, context):
         query.message.reply_to_message.delete()
 
 
-picture_add_handler = CommandHandler('addpic', picture_add,
-                                    filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
-pictures_handler = CommandHandler('pics', pictures,
-                                    filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
+picture_add_handler = CommandHandler(
+    "addpic", picture_add, filters=CustomFilters.owner_filter | CustomFilters.sudo_user
+)
+pictures_handler = CommandHandler(
+    "pics", pictures, filters=CustomFilters.owner_filter | CustomFilters.sudo_user
+)
 pic_call_handler = CallbackQueryHandler(pics_callback, pattern="pics")
 
 dispatcher.add_handler(picture_add_handler)

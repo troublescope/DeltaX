@@ -1,13 +1,17 @@
-from telegram.ext import CommandHandler, CallbackQueryHandler
-from time import sleep
 from threading import Thread
+from time import sleep
 
-from bot import download_dict, dispatcher, download_dict_lock, OWNER_ID, user_data
+from telegram.ext import CallbackQueryHandler, CommandHandler
+
+from bot import (OWNER_ID, dispatcher, download_dict, download_dict_lock,
+                 user_data)
+from bot.helper.ext_utils.bot_utils import (MirrorStatus, getAllDownload,
+                                            getDownloadByGid, new_thread)
+from bot.helper.telegram_helper import button_build
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import sendMessage, auto_delete_message
-from bot.helper.ext_utils.bot_utils import getDownloadByGid, getAllDownload, new_thread, MirrorStatus
-from bot.helper.telegram_helper import button_build
+from bot.helper.telegram_helper.message_utils import (auto_delete_message,
+                                                      sendMessage)
 
 
 def cancel_mirror(update, context):
@@ -16,7 +20,9 @@ def cancel_mirror(update, context):
         gid = context.args[0]
         dl = getDownloadByGid(gid)
         if not dl:
-            return sendMessage(f"GID: <code>{gid}</code> Not Found.", context.bot, update.message)
+            return sendMessage(
+                f"GID: <code>{gid}</code> Not Found.", context.bot, update.message
+            )
     elif update.message.reply_to_message:
         mirror_message = update.message.reply_to_message
         with download_dict_lock:
@@ -25,29 +31,38 @@ def cancel_mirror(update, context):
             else:
                 dl = None
         if not dl:
-            return sendMessage("This is not an active task!", context.bot, update.message)
+            return sendMessage(
+                "This is not an active task!", context.bot, update.message
+            )
     elif len(context.args) == 0:
         msg = f"Reply to an active <code>/{BotCommands.MirrorCommand}</code> message which \
                 was used to start the download or send <code>/{BotCommands.CancelMirror} GID</code> to cancel it!"
         return sendMessage(msg, context.bot, update.message)
 
-    if OWNER_ID != user_id and dl.message.from_user.id != user_id and \
-       (user_id not in user_data or not user_data[user_id].get('is_sudo')):
+    if (
+        OWNER_ID != user_id
+        and dl.message.from_user.id != user_id
+        and (user_id not in user_data or not user_data[user_id].get("is_sudo"))
+    ):
         return sendMessage("This task is not for you!", context.bot, update.message)
 
     if dl.status() == MirrorStatus.STATUS_CONVERTING:
-        sendMessage("Converting... Can't cancel this task!", context.bot, update.message)
+        sendMessage(
+            "Converting... Can't cancel this task!", context.bot, update.message
+        )
         return
 
     dl.download().cancel_download()
 
+
 def cancel_all(status):
-    gid = ''
+    gid = ""
     while dl := getAllDownload(status):
         if dl.gid() != gid:
             gid = dl.gid()
             dl.download().cancel_download()
             sleep(1)
+
 
 def cancell_all_buttons(update, context):
     buttons = button_build.ButtonMaker()
@@ -63,8 +78,13 @@ def cancell_all_buttons(update, context):
     buttons.sbutton("All", "canall all")
     buttons.sbutton("Close", "canall close")
     button = buttons.build_menu(2)
-    can_msg = sendMessage('Choose tasks to cancel.', context.bot, update.message, button)
-    Thread(target=auto_delete_message, args=(context.bot, update.message, can_msg)).start()
+    can_msg = sendMessage(
+        "Choose tasks to cancel.", context.bot, update.message, button
+    )
+    Thread(
+        target=auto_delete_message, args=(context.bot, update.message, can_msg)
+    ).start()
+
 
 @new_thread
 def cancel_all_update(update, context):
@@ -79,20 +99,27 @@ def cancel_all_update(update, context):
     data = data.split()
     if CustomFilters.owner_query(user_id):
         query.answer()
-        if data[1] == 'close':
+        if data[1] == "close":
             query.message.delete()
             query.message.reply_to_message.delete()
             return
         cancel_all(data[1])
     else:
-        query.answer(text="You don't have permission to use these buttons!", show_alert=True)
+        query.answer(
+            text="You don't have permission to use these buttons!", show_alert=True
+        )
 
 
-
-cancel_mirror_handler = CommandHandler(BotCommands.CancelMirror, cancel_mirror,
-                                   filters=(CustomFilters.authorized_chat | CustomFilters.authorized_user))
-cancel_all_handler = CommandHandler(BotCommands.CancelAllCommand, cancell_all_buttons,
-                                   filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
+cancel_mirror_handler = CommandHandler(
+    BotCommands.CancelMirror,
+    cancel_mirror,
+    filters=(CustomFilters.authorized_chat | CustomFilters.authorized_user),
+)
+cancel_all_handler = CommandHandler(
+    BotCommands.CancelAllCommand,
+    cancell_all_buttons,
+    filters=CustomFilters.owner_filter | CustomFilters.sudo_user,
+)
 
 cancel_all_buttons_handler = CallbackQueryHandler(cancel_all_update, pattern="canall")
 

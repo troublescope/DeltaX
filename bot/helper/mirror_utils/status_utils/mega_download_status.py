@@ -1,8 +1,9 @@
-from bot.helper.ext_utils.bot_utils import MirrorStatus, get_readable_file_size, get_readable_time, EngineStatus
+from bot.helper.ext_utils.bot_utils import (EngineStatus, MirrorStatus,
+                                            get_readable_file_size,
+                                            get_readable_time)
 
 
 class MegaDownloadStatus:
-
     def __init__(self, obj, listener):
         self.__obj = obj
         self.message = listener.message
@@ -12,7 +13,7 @@ class MegaDownloadStatus:
 
     def progress_raw(self):
         try:
-            return round(self.processed_bytes() / self.__obj.size * 100,2)
+            return round(self.processed_bytes() / self.__obj.size * 100, 2)
         except:
             return 0.0
 
@@ -29,9 +30,9 @@ class MegaDownloadStatus:
     def eta(self):
         try:
             seconds = (self.size_raw() - self.processed_bytes()) / self.speed_raw()
-            return f'{get_readable_time(seconds)}'
+            return f"{get_readable_time(seconds)}"
         except ZeroDivisionError:
-            return '-'
+            return "-"
 
     def size_raw(self):
         return self.__obj.size
@@ -46,7 +47,7 @@ class MegaDownloadStatus:
         return self.__obj.speed
 
     def speed(self) -> str:
-        return f'{get_readable_file_size(self.speed_raw())}/s'
+        return f"{get_readable_file_size(self.speed_raw())}/s"
 
     def gid(self) -> str:
         return self.__obj.gid

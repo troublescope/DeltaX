@@ -1,4 +1,6 @@
-from bot.helper.ext_utils.bot_utils import MirrorStatus, get_readable_file_size, get_readable_time, EngineStatus
+from bot.helper.ext_utils.bot_utils import (EngineStatus, MirrorStatus,
+                                            get_readable_file_size,
+                                            get_readable_time)
 
 
 class GdDownloadStatus:
@@ -33,7 +35,7 @@ class GdDownloadStatus:
             return 0
 
     def progress(self):
-        return f'{round(self.progress_raw(), 2)}%'
+        return f"{round(self.progress_raw(), 2)}%"
 
     def speed_raw(self):
         """
@@ -42,14 +44,14 @@ class GdDownloadStatus:
         return self.__obj.speed()
 
     def speed(self):
-        return f'{get_readable_file_size(self.speed_raw())}/s'
+        return f"{get_readable_file_size(self.speed_raw())}/s"
 
     def eta(self):
         try:
             seconds = (self.__size - self.__obj.processed_bytes) / self.speed_raw()
-            return f'{get_readable_time(seconds)}'
+            return f"{get_readable_time(seconds)}"
         except:
-            return '-'
+            return "-"
 
     def download(self):
         return self.__obj
