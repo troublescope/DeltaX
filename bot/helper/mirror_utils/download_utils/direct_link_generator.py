@@ -116,12 +116,12 @@ def direct_link_generator(link: str):
         return shareDrive(link)
     elif is_filepress_link(link):
         return filepress(link)
-    elif any(x in link for x in fmed_list):
-        return fembed(link)
     elif any(
         x in link for x in ["sbembed.com", "watchsb.com", "streamsb.net", "sbplay.org"]
     ):
         return sbembed(link)
+    elif if catch_fembed(link):
+        return catch_fembed(link)
     else:
         raise DirectDownloadLinkException(f"No Direct link function found for {link}")
 
@@ -407,7 +407,7 @@ def letsupload(url: str) -> str:
     return Bypass().bypass_url(link)
 
 
-def fembed(link: str) -> str:
+def catch_fembed(link: str) -> str:
     """Fembed direct link generator
     Based on https://github.com/zevtyardt/lk21
     """
