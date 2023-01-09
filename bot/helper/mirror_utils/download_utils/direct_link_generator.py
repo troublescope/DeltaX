@@ -31,20 +31,6 @@ from bot.helper.ext_utils.bot_utils import (is_filepress_link, is_gdtot_link,
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
 from bot.helper.telegram_helper.bot_commands import BotCommands
 
-fmed_list = [
-    "fembed.net",
-    "fembed.com",
-    "femax20.com",
-    "fcdn.stream",
-    "feurl.com",
-    "layarkacaxxi.icu",
-    "naniplay.nanime.in",
-    "naniplay.nanime.biz",
-    "naniplay.com",
-    "mm9842.com",
-]
-
-
 cryptDict = {
     "hubdrive": config_dict["HUBDRIVE_CRYPT"],
     "katdrive": config_dict["KATDRIVE_CRYPT"],
@@ -120,7 +106,7 @@ def direct_link_generator(link: str):
         x in link for x in ["sbembed.com", "watchsb.com", "streamsb.net", "sbplay.org"]
     ):
         return sbembed(link)
-    elif if catch_fembed(link):
+    elif catch_fembed(link):
         return catch_fembed(link)
     else:
         raise DirectDownloadLinkException(f"No Direct link function found for {link}")
