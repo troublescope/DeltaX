@@ -10,20 +10,22 @@ from time import sleep, time
 
 from PIL import Image
 from telegram import ParseMode
-from telegram.ext import (CallbackQueryHandler, CommandHandler, Filters,
-                          MessageHandler)
+from telegram.ext import CallbackQueryHandler, CommandHandler, Filters, MessageHandler
 
-from bot import (DATABASE_URL, LOGGER, OWNER_ID, bot, config_dict, dispatcher,
-                 user_data)
-from bot.helper.ext_utils.bot_utils import (get_readable_file_size,
-                                            getdailytasks, getUserTDs, is_paid,
-                                            is_sudo, update_user_ldata)
+from bot import DATABASE_URL, LOGGER, OWNER_ID, bot, config_dict, dispatcher, user_data
+from bot.helper.ext_utils.bot_utils import (
+    get_readable_file_size,
+    getdailytasks,
+    getUserTDs,
+    is_paid,
+    is_sudo,
+    update_user_ldata,
+)
 from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (editMessage, sendMessage,
-                                                      sendPhoto)
+from bot.helper.telegram_helper.message_utils import editMessage, sendMessage, sendPhoto
 
 handler_dict = {}
 example_dict = {

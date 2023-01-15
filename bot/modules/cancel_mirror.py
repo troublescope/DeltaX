@@ -3,15 +3,17 @@ from time import sleep
 
 from telegram.ext import CallbackQueryHandler, CommandHandler
 
-from bot import (OWNER_ID, dispatcher, download_dict, download_dict_lock,
-                 user_data)
-from bot.helper.ext_utils.bot_utils import (MirrorStatus, getAllDownload,
-                                            getDownloadByGid, new_thread)
+from bot import OWNER_ID, dispatcher, download_dict, download_dict_lock, user_data
+from bot.helper.ext_utils.bot_utils import (
+    MirrorStatus,
+    getAllDownload,
+    getDownloadByGid,
+    new_thread,
+)
 from bot.helper.telegram_helper import button_build
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (auto_delete_message,
-                                                      sendMessage)
+from bot.helper.telegram_helper.message_utils import auto_delete_message, sendMessage
 
 
 def cancel_mirror(update, context):

@@ -3,14 +3,23 @@ from os import remove
 
 from telegram.ext import CallbackQueryHandler, CommandHandler
 
-from bot import (LOGGER, OWNER_ID, aria2, dispatcher, download_dict,
-                 download_dict_lock, user_data)
-from bot.helper.ext_utils.bot_utils import (MirrorStatus, bt_selection_buttons,
-                                            getDownloadByGid)
+from bot import (
+    LOGGER,
+    OWNER_ID,
+    aria2,
+    dispatcher,
+    download_dict,
+    download_dict_lock,
+    user_data,
+)
+from bot.helper.ext_utils.bot_utils import (
+    MirrorStatus,
+    bt_selection_buttons,
+    getDownloadByGid,
+)
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (sendMessage,
-                                                      sendStatusMessage)
+from bot.helper.telegram_helper.message_utils import sendMessage, sendStatusMessage
 
 
 def select(update, context):

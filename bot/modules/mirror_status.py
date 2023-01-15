@@ -4,20 +4,36 @@ from time import sleep, time
 from psutil import cpu_percent, disk_usage, virtual_memory
 from telegram.ext import CallbackQueryHandler, CommandHandler
 
-from bot import (OWNER_ID, Interval, botStartTime, config_dict, dispatcher,
-                 download_dict, download_dict_lock, status_reply_dict_lock)
-from bot.helper.ext_utils.bot_utils import (get_readable_file_size,
-                                            get_readable_time, new_thread,
-                                            pop_up_stats, setInterval, turn)
+from bot import (
+    OWNER_ID,
+    Interval,
+    botStartTime,
+    config_dict,
+    dispatcher,
+    download_dict,
+    download_dict_lock,
+    status_reply_dict_lock,
+)
+from bot.helper.ext_utils.bot_utils import (
+    get_readable_file_size,
+    get_readable_time,
+    new_thread,
+    pop_up_stats,
+    setInterval,
+    turn,
+)
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (auto_delete_message,
-                                                      delete_all_messages,
-                                                      deleteMessage,
-                                                      editCaption, editMessage,
-                                                      sendMessage,
-                                                      sendStatusMessage,
-                                                      update_all_messages)
+from bot.helper.telegram_helper.message_utils import (
+    auto_delete_message,
+    delete_all_messages,
+    deleteMessage,
+    editCaption,
+    editMessage,
+    sendMessage,
+    sendStatusMessage,
+    update_all_messages,
+)
 
 
 def mirror_status(update, context):

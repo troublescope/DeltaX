@@ -25,9 +25,13 @@ from requests import head as rhead
 from requests import post as rpost
 
 from bot import LOGGER, config_dict
-from bot.helper.ext_utils.bot_utils import (is_filepress_link, is_gdtot_link,
-                                            is_sharedrive_link, is_sharer_link,
-                                            is_udrive_link)
+from bot.helper.ext_utils.bot_utils import (
+    is_filepress_link,
+    is_gdtot_link,
+    is_sharedrive_link,
+    is_sharer_link,
+    is_udrive_link,
+)
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
 from bot.helper.telegram_helper.bot_commands import BotCommands
 

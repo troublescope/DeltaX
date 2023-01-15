@@ -3,22 +3,42 @@ from os import remove
 from re import match
 from time import sleep, time
 
-from bot import (LOGGER, OWNER_ID, aria2, aria2_options, aria2c_global,
-                 config_dict, download_dict, download_dict_lock, user_data)
-from bot.helper.ext_utils.bot_utils import (bt_selection_buttons,
-                                            get_readable_file_size,
-                                            getdailytasks, getDownloadByGid,
-                                            is_magnet, is_paid, is_sudo,
-                                            new_thread, userlistype)
-from bot.helper.ext_utils.fs_utils import (check_storage_threshold,
-                                           clean_unwanted, get_base_name)
-from bot.helper.mirror_utils.status_utils.aria_download_status import \
-    AriaDownloadStatus
+from bot import (
+    LOGGER,
+    OWNER_ID,
+    aria2,
+    aria2_options,
+    aria2c_global,
+    config_dict,
+    download_dict,
+    download_dict_lock,
+    user_data,
+)
+from bot.helper.ext_utils.bot_utils import (
+    bt_selection_buttons,
+    get_readable_file_size,
+    getdailytasks,
+    getDownloadByGid,
+    is_magnet,
+    is_paid,
+    is_sudo,
+    new_thread,
+    userlistype,
+)
+from bot.helper.ext_utils.fs_utils import (
+    check_storage_threshold,
+    clean_unwanted,
+    get_base_name,
+)
+from bot.helper.mirror_utils.status_utils.aria_download_status import AriaDownloadStatus
 from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
-from bot.helper.telegram_helper.message_utils import (deleteMessage, sendFile,
-                                                      sendMessage,
-                                                      sendStatusMessage,
-                                                      update_all_messages)
+from bot.helper.telegram_helper.message_utils import (
+    deleteMessage,
+    sendFile,
+    sendMessage,
+    sendStatusMessage,
+    update_all_messages,
+)
 from bot.modules.scraper import indexScrape
 
 

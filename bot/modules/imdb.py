@@ -2,15 +2,24 @@ from re import IGNORECASE, findall
 
 from imdb import IMDb
 from pycountry import countries as conn
-from pyrogram.errors.exceptions.bad_request_400 import (MediaEmpty,
-                                                        PhotoInvalidDimensions,
-                                                        WebpageMediaEmpty)
+from pyrogram.errors.exceptions.bad_request_400 import (
+    MediaEmpty,
+    PhotoInvalidDimensions,
+    WebpageMediaEmpty,
+)
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram import Update
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
 
-from bot import (DEF_IMDB_TEMP, IMDB_ENABLED, LIST_ITEMS, LOGGER, app,
-                 dispatcher, user_data)
+from bot import (
+    DEF_IMDB_TEMP,
+    IMDB_ENABLED,
+    LIST_ITEMS,
+    LOGGER,
+    app,
+    dispatcher,
+    user_data,
+)
 from bot.helper.ext_utils.bot_utils import get_readable_time
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.filters import CustomFilters

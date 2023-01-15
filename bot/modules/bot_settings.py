@@ -8,24 +8,43 @@ from subprocess import run as srun
 from time import sleep, time
 
 from dotenv import load_dotenv
-from telegram.ext import (CallbackQueryHandler, CommandHandler, Filters,
-                          MessageHandler)
+from telegram.ext import CallbackQueryHandler, CommandHandler, Filters, MessageHandler
 
-from bot import (CATEGORY_IDS, CATEGORY_INDEX, CATEGORY_NAMES, DATABASE_URL,
-                 DRIVES_IDS, DRIVES_NAMES, GLOBAL_EXTENSION_FILTER, INDEX_URLS,
-                 LOGGER, Interval, aria2, aria2_options, aria2c_global,
-                 config_dict, dispatcher, download_dict, get_client,
-                 qbit_options, status_reply_dict_lock, tgBotMaxFileSize,
-                 user_data)
+from bot import (
+    CATEGORY_IDS,
+    CATEGORY_INDEX,
+    CATEGORY_NAMES,
+    DATABASE_URL,
+    DRIVES_IDS,
+    DRIVES_NAMES,
+    GLOBAL_EXTENSION_FILTER,
+    INDEX_URLS,
+    LOGGER,
+    Interval,
+    aria2,
+    aria2_options,
+    aria2c_global,
+    config_dict,
+    dispatcher,
+    download_dict,
+    get_client,
+    qbit_options,
+    status_reply_dict_lock,
+    tgBotMaxFileSize,
+    user_data,
+)
 from bot.helper.ext_utils.bot_utils import new_thread, setInterval
 from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.ext_utils.queued_starter import start_from_queued
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (editMessage, sendFile,
-                                                      sendMessage,
-                                                      update_all_messages)
+from bot.helper.telegram_helper.message_utils import (
+    editMessage,
+    sendFile,
+    sendMessage,
+    update_all_messages,
+)
 from bot.modules.search import initiate_search_tools
 
 START = 0

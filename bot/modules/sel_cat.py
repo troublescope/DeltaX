@@ -2,11 +2,20 @@ from time import sleep, time
 
 from telegram.ext import CallbackQueryHandler, CommandHandler
 
-from bot import (CATEGORY_NAMES, btn_listener, dispatcher, download_dict,
-                 download_dict_lock)
-from bot.helper.ext_utils.bot_utils import (MirrorStatus, get_category_buttons,
-                                            getDownloadByGid, getUserTDs,
-                                            new_thread)
+from bot import (
+    CATEGORY_NAMES,
+    btn_listener,
+    dispatcher,
+    download_dict,
+    download_dict_lock,
+)
+from bot.helper.ext_utils.bot_utils import (
+    MirrorStatus,
+    get_category_buttons,
+    getDownloadByGid,
+    getUserTDs,
+    new_thread,
+)
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import editMessage, sendMessage

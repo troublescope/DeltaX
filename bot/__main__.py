@@ -11,31 +11,75 @@ from time import time
 from urllib.parse import quote as q
 
 from bs4 import BeautifulSoup
-from psutil import (boot_time, cpu_count, cpu_percent, disk_usage,
-                    net_io_counters, swap_memory, virtual_memory)
+from psutil import (
+    boot_time,
+    cpu_count,
+    cpu_percent,
+    disk_usage,
+    net_io_counters,
+    swap_memory,
+    virtual_memory,
+)
 from pytz import timezone
 from requests import get as rget
 from telegram.ext import CommandHandler
 
-from bot import (DATABASE_URL, IGNORE_PENDING_REQUESTS, LOGGER, Interval,
-                 QbInterval, app, bot, botStartTime, config_dict, dispatcher,
-                 main_loop, updater)
+from bot import (
+    DATABASE_URL,
+    IGNORE_PENDING_REQUESTS,
+    LOGGER,
+    Interval,
+    QbInterval,
+    app,
+    bot,
+    botStartTime,
+    config_dict,
+    dispatcher,
+    main_loop,
+    updater,
+)
 
-from .helper.ext_utils.bot_utils import (get_readable_file_size,
-                                         get_readable_time)
+from .helper.ext_utils.bot_utils import get_readable_file_size, get_readable_time
 from .helper.ext_utils.db_handler import DbManger
 from .helper.ext_utils.fs_utils import clean_all, exit_clean_up, start_cleanup
 from .helper.ext_utils.telegraph_helper import telegraph
 from .helper.telegram_helper.bot_commands import BotCommands
 from .helper.telegram_helper.button_build import ButtonMaker
 from .helper.telegram_helper.filters import CustomFilters
-from .helper.telegram_helper.message_utils import (editMessage, sendLogFile,
-                                                   sendMessage, sendPhoto)
-from .modules import (anilist, authorize, bot_settings, bt_select,
-                      cancel_mirror, clone, count, delete, eval, hash, imdb,
-                      list, mediainfo, mirror_leech, mirror_status, pictures,
-                      rss, save_msg, scraper, search, sel_cat, shell,
-                      speedtest, users_settings, wayback, ytdlp)
+from .helper.telegram_helper.message_utils import (
+    editMessage,
+    sendLogFile,
+    sendMessage,
+    sendPhoto,
+)
+from .modules import (
+    anilist,
+    authorize,
+    bot_settings,
+    bt_select,
+    cancel_mirror,
+    clone,
+    count,
+    delete,
+    eval,
+    hash,
+    imdb,
+    list,
+    mediainfo,
+    mirror_leech,
+    mirror_status,
+    pictures,
+    rss,
+    save_msg,
+    scraper,
+    search,
+    sel_cat,
+    shell,
+    speedtest,
+    users_settings,
+    wayback,
+    ytdlp,
+)
 
 version = "5.0.0"
 
@@ -137,28 +181,16 @@ def stats(update, context):
             else f"{USER_TASKS_LIMIT} Tasks/user"
         )
 
-        if config_dict["EMOJI_THEME"]:
-            stats += (
-                f"<b>╭─《 ⚠️ BOT LIMITS ⚠️ 》</b>\n"
-                f"<b>├ 🧲 Torrent/Direct: </b>{torrent_direct}\n"
-                f"<b>├ 🔐 Zip/Unzip: </b>{zip_unzip}\n"
-                f"<b>├ 🔷 Leech: </b>{leech_limit}\n"
-                f"<b>├ ♻️ Clone: </b>{clone_limit}\n"
-                f"<b>├ 🔰 Mega: </b>{mega_limit}\n"
-                f"<b>├ 💣 Total Tasks: </b>{total_task}\n"
-                f"<b>╰ 🔫 User Tasks: </b>{user_task}\n\n"
-            )
-        else:
-            stats += (
-                f"<b>╭─《 ⚠️ BOT LIMITS ⚠️ 》</b>\n"
-                f"<b>├  Torrent/Direct: </b>{torrent_direct}\n"
-                f"<b>├  Zip/Unzip: </b>{zip_unzip}\n"
-                f"<b>├  Leech: </b>{leech_limit}\n"
-                f"<b>├  Clone: </b>{clone_limit}\n"
-                f"<b>├  Mega: </b>{mega_limit}\n"
-                f"<b>├  Total Tasks: </b>{total_task}\n"
-                f"<b>╰  User Tasks: </b>{user_task}\n\n"
-            )
+        stats += (
+            f"<b>  《 ⚠️ BOT LIMITS ⚠️\n"
+            f"<b>Torrent/Direct: </b>{torrent_direct}\n"
+            f"<b>Zip/Unzip: </b>{zip_unzip}\n"
+            f"<b>Leech: </b>{leech_limit}\n"
+            f"<b>Clone: </b>{clone_limit}\n"
+            f"<b>Mega: </b>{mega_limit}\n"
+            f"<b>Total Tasks: </b>{total_task}\n"
+            f"<b>User Tasks: </b>{user_task}\n\n"
+        )
 
     if config_dict["PICS"]:
         sendPhoto(stats, context.bot, update.message, rchoice(config_dict["PICS"]))
@@ -168,20 +200,12 @@ def stats(update, context):
 
 def start(update, context):
     buttons = ButtonMaker()
-    if config_dict["EMOJI_THEME"]:
-        buttons.buildbutton(
-            f"😎 {config_dict['START_BTN1_NAME']}", f"{config_dict['START_BTN1_URL']}"
-        )
-        buttons.buildbutton(
-            f"🔥 {config_dict['START_BTN2_NAME']}", f"{config_dict['START_BTN2_URL']}"
-        )
-    else:
-        buttons.buildbutton(
-            f"{config_dict['START_BTN1_NAME']}", f"{config_dict['START_BTN1_URL']}"
-        )
-        buttons.buildbutton(
-            f"{config_dict['START_BTN2_NAME']}", f"{config_dict['START_BTN2_URL']}"
-        )
+    buttons.buildbutton(
+        f"{config_dict['START_BTN1_NAME']}", f"{config_dict['START_BTN1_URL']}"
+    )
+    buttons.buildbutton(
+        f"{config_dict['START_BTN2_NAME']}", f"{config_dict['START_BTN2_URL']}"
+    )
     reply_markup = buttons.build_menu(2)
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f"""This bot can mirror all your links to Google Drive!
@@ -229,16 +253,10 @@ def restart(update, context):
 
 
 def ping(update, context):
-    if config_dict["EMOJI_THEME"]:
-        start_time = int(round(time() * 1000))
-        reply = sendMessage("Starting_Ping ⛔", context.bot, update.message)
-        end_time = int(round(time() * 1000))
-        editMessage(f"{end_time - start_time} ms 🔥", reply)
-    else:
-        start_time = int(round(time() * 1000))
-        reply = sendMessage("Starting_Ping ", context.bot, update.message)
-        end_time = int(round(time() * 1000))
-        editMessage(f"{end_time - start_time} ms ", reply)
+    start_time = int(round(time() * 1000))
+    reply = sendMessage("Starting Ping", context.bot, update.message)
+    end_time = int(round(time() * 1000))
+    editMessage(f"{end_time - start_time} ms", reply)
 
 
 def log(update, context):
@@ -326,7 +344,7 @@ help_user = telegraph.create_page(
 )["path"]
 
 help_string_telegraph_admin = f"""
-<b><u>🛡️ Admin Commands</u></b>
+<b><u> Admin Commands</u></b>
 <br><br>
 • <b>/{BotCommands.PingCommand}</b>: Check how long it takes to Ping the Bot
 <br><br>
@@ -488,10 +506,6 @@ def main():
                     msg = f"Restarted Successfully❗\n"
                 else:
                     msg = f"Bot Restarted!\n"
-                msg += f"DATE: {date}\n"
-                msg += f"ME: {time}\n"
-                msg += f"TIMEZONE: {timez}\n"
-                msg += f"VERSION: {version}"
 
                 for tag, links in data.items():
                     msg += f"\n{tag}: "
@@ -527,10 +541,6 @@ def main():
             chat_id, msg_id = map(int, f)
         try:
             msg = f"Restarted Successfully❗\n"
-            msg += f"DATE: {date}\n"
-            msg += f"IME: {time}\n"
-            msg += f"TIMEZONE: {timez}\n"
-            msg += f"VERSION: {version}"
             bot.edit_message_text(msg, chat_id, msg_id)
         except Exception as e:
             LOGGER.info(e)

@@ -4,15 +4,26 @@ from time import sleep
 from feedparser import parse as feedparse
 from telegram.ext import CallbackQueryHandler, CommandHandler
 
-from bot import (DATABASE_URL, LOGGER, RSS_CHAT_ID, RSS_DELAY, config_dict,
-                 dispatcher, job_queue, rss_dict)
+from bot import (
+    DATABASE_URL,
+    LOGGER,
+    RSS_CHAT_ID,
+    RSS_DELAY,
+    config_dict,
+    dispatcher,
+    job_queue,
+    rss_dict,
+)
 from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (auto_delete_message,
-                                                      editMessage, sendMessage,
-                                                      sendRss)
+from bot.helper.telegram_helper.message_utils import (
+    auto_delete_message,
+    editMessage,
+    sendMessage,
+    sendRss,
+)
 
 rss_dict_lock = Lock()
 

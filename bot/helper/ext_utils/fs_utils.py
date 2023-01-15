@@ -14,8 +14,17 @@ from time import time
 from magic import Magic
 from PIL import Image
 
-from bot import (DOWNLOAD_DIR, LOGGER, STORAGE_THRESHOLD, app, aria2,
-                 config_dict, get_client, premium_session, user_data)
+from bot import (
+    DOWNLOAD_DIR,
+    LOGGER,
+    STORAGE_THRESHOLD,
+    app,
+    aria2,
+    config_dict,
+    get_client,
+    premium_session,
+    user_data,
+)
 
 from .exceptions import NotSupportedExtractionArchive
 

@@ -8,38 +8,59 @@ from time import sleep, time
 from requests import get as rget
 from telegram.ext import CallbackQueryHandler, CommandHandler
 
-from bot import (CATEGORY_NAMES, DOWNLOAD_DIR, LOGGER, OWNER_ID,
-                 TIME_GAP_STORE, btn_listener, config_dict, dispatcher,
-                 download_dict)
-from bot.helper.ext_utils.bot_utils import (get_bot_pm, get_category_buttons,
-                                            get_content_type, get_user_task,
-                                            getdailytasks, getUserTDs,
-                                            is_filepress_link, is_gdrive_link,
-                                            is_gdtot_link, is_magnet,
-                                            is_mega_link, is_paid,
-                                            is_sharedrive_link, is_sharer_link,
-                                            is_sudo, is_udrive_link, is_url,
-                                            new_thread)
+from bot import (
+    CATEGORY_NAMES,
+    DOWNLOAD_DIR,
+    LOGGER,
+    OWNER_ID,
+    TIME_GAP_STORE,
+    btn_listener,
+    config_dict,
+    dispatcher,
+    download_dict,
+)
+from bot.helper.ext_utils.bot_utils import (
+    get_bot_pm,
+    get_category_buttons,
+    get_content_type,
+    get_user_task,
+    getdailytasks,
+    getUserTDs,
+    is_filepress_link,
+    is_gdrive_link,
+    is_gdtot_link,
+    is_magnet,
+    is_mega_link,
+    is_paid,
+    is_sharedrive_link,
+    is_sharer_link,
+    is_sudo,
+    is_udrive_link,
+    is_url,
+    new_thread,
+)
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
 from bot.helper.ext_utils.timegap import timegap_check
-from bot.helper.mirror_utils.download_utils.aria2_download import \
-    add_aria2c_download
-from bot.helper.mirror_utils.download_utils.direct_link_generator import \
-    direct_link_generator
-from bot.helper.mirror_utils.download_utils.gd_downloader import \
-    add_gd_download
-from bot.helper.mirror_utils.download_utils.mega_downloader import \
-    add_mega_download
-from bot.helper.mirror_utils.download_utils.qbit_downloader import \
-    add_qb_torrent
-from bot.helper.mirror_utils.download_utils.telegram_downloader import \
-    TelegramDownloadHelper
+from bot.helper.mirror_utils.download_utils.aria2_download import add_aria2c_download
+from bot.helper.mirror_utils.download_utils.direct_link_generator import (
+    direct_link_generator,
+)
+from bot.helper.mirror_utils.download_utils.gd_downloader import add_gd_download
+from bot.helper.mirror_utils.download_utils.mega_downloader import add_mega_download
+from bot.helper.mirror_utils.download_utils.qbit_downloader import add_qb_torrent
+from bot.helper.mirror_utils.download_utils.telegram_downloader import (
+    TelegramDownloadHelper,
+)
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (auto_delete_message,
-                                                      editMessage, forcesub,
-                                                      isAdmin, sendMessage)
+from bot.helper.telegram_helper.message_utils import (
+    auto_delete_message,
+    editMessage,
+    forcesub,
+    isAdmin,
+    sendMessage,
+)
 
 from .listener import MirrorLeechListener
 

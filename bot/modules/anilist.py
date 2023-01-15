@@ -9,13 +9,11 @@ from requests import post as rpost
 from telegram import ParseMode
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
 
-from bot import (ANILIST_ENABLED, DEF_ANI_TEMP, IMAGE_URL, LOGGER, dispatcher,
-                 user_data)
+from bot import ANILIST_ENABLED, DEF_ANI_TEMP, IMAGE_URL, LOGGER, dispatcher, user_data
 from bot.helper.ext_utils.bot_utils import get_readable_time
 from bot.helper.telegram_helper.button_build import ButtonMaker
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (editMessage, sendMessage,
-                                                      sendPhoto)
+from bot.helper.telegram_helper.message_utils import editMessage, sendMessage, sendPhoto
 
 GENRES_EMOJI = {
     "Action": "👊",

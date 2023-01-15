@@ -6,14 +6,16 @@ from speedtest import Speedtest
 from telegram.ext import CommandHandler
 
 from bot import botStartTime, dispatcher
-from bot.helper.ext_utils.bot_utils import (get_readable_file_size,
-                                            get_readable_time)
+from bot.helper.ext_utils.bot_utils import get_readable_file_size, get_readable_time
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (auto_delete_message,
-                                                      deleteMessage,
-                                                      editMessage, sendMessage,
-                                                      sendPhoto)
+from bot.helper.telegram_helper.message_utils import (
+    auto_delete_message,
+    deleteMessage,
+    editMessage,
+    sendMessage,
+    sendPhoto,
+)
 
 
 def speedtest(update, context):

@@ -4,8 +4,16 @@ from os import path as ospath
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 
-from bot import (DATABASE_URL, LOGGER, aria2_options, bot_id, config_dict,
-                 qbit_options, rss_dict, user_data)
+from bot import (
+    DATABASE_URL,
+    LOGGER,
+    aria2_options,
+    bot_id,
+    config_dict,
+    qbit_options,
+    rss_dict,
+    user_data,
+)
 
 
 class DbManger:

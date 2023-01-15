@@ -1,15 +1,21 @@
 from threading import Thread
 
-from bot import (config_dict, non_queued_dl, non_queued_up, queue_dict_lock,
-                 queued_dl, queued_up)
-from bot.helper.mirror_utils.download_utils.gd_downloader import \
-    add_gd_download
-from bot.helper.mirror_utils.download_utils.mega_downloader import \
-    add_mega_download
-from bot.helper.mirror_utils.download_utils.telegram_downloader import \
-    TelegramDownloadHelper
-from bot.helper.mirror_utils.download_utils.yt_dlp_download_helper import \
-    YoutubeDLHelper
+from bot import (
+    config_dict,
+    non_queued_dl,
+    non_queued_up,
+    queue_dict_lock,
+    queued_dl,
+    queued_up,
+)
+from bot.helper.mirror_utils.download_utils.gd_downloader import add_gd_download
+from bot.helper.mirror_utils.download_utils.mega_downloader import add_mega_download
+from bot.helper.mirror_utils.download_utils.telegram_downloader import (
+    TelegramDownloadHelper,
+)
+from bot.helper.mirror_utils.download_utils.yt_dlp_download_helper import (
+    YoutubeDLHelper,
+)
 
 
 def start_dl_from_queued(uid):
