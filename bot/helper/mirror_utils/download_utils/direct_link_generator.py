@@ -1,39 +1,39 @@
-from base64 import b64decode, standard_b64encode
-from http.cookiejar import MozillaCookieJar
-from json import loads as jsonloads
-from math import floor, pow
-from os import path as ospath
-from re import DOTALL
-from re import compile as re_compile
-from re import findall as re_findall
-from re import match as re_match
-from re import search as re_search
-from re import sub as re_sub
-from time import sleep, time
-from urllib.parse import unquote, urlparse
-
-import cloudscraper
 import requests
-from bs4 import BeautifulSoup
-from cfscrape import create_scraper
+import cloudscraper
+
+from os import path as ospath
+from math import pow, floor
+from http.cookiejar import MozillaCookieJar
+from requests import get as rget, head as rhead, post as rpost, Session as rsession
+from re import (
+    findall as re_findall,
+    sub as re_sub,
+    match as re_match,
+    search as re_search,
+    compile as re_compile,
+    DOTALL,
+)
+from time import sleep, time
+from urllib.parse import urlparse, unquote
+from json import loads as jsonloads
 from lk21 import Bypass
 from lxml import etree
-from playwright.sync_api import Playwright, expect, sync_playwright
-from requests import Session as rsession
-from requests import get as rget
-from requests import head as rhead
-from requests import post as rpost
+from cfscrape import create_scraper
+from bs4 import BeautifulSoup
+from base64 import standard_b64encode, b64decode
+from playwright.sync_api import Playwright, sync_playwright, expect
 
 from bot import LOGGER, config_dict
+from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.ext_utils.bot_utils import (
-    is_filepress_link,
     is_gdtot_link,
-    is_sharedrive_link,
-    is_sharer_link,
     is_udrive_link,
+    is_sharer_link,
+    is_sharedrive_link,
+    is_filepress_link,
+    is_fembed,
 )
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
-from bot.helper.telegram_helper.bot_commands import BotCommands
 
 cryptDict = {
     "hubdrive": config_dict["HUBDRIVE_CRYPT"],
@@ -106,12 +106,12 @@ def direct_link_generator(link: str):
         return shareDrive(link)
     elif is_filepress_link(link):
         return filepress(link)
+    elif is_fembed(link):
+        return fembed(link)
     elif any(
         x in link for x in ["sbembed.com", "watchsb.com", "streamsb.net", "sbplay.org"]
     ):
         return sbembed(link)
-    elif catch_fembed(link):
-        return catch_fembed(link)
     else:
         raise DirectDownloadLinkException(f"No Direct link function found for {link}")
 
@@ -397,14 +397,11 @@ def letsupload(url: str) -> str:
     return Bypass().bypass_url(link)
 
 
-def catch_fembed(link: str) -> str:
+def fembed(link: str) -> str:
     """Fembed direct link generator
     Based on https://github.com/zevtyardt/lk21
     """
-    try:
-        dl_url = Bypass().bypass_fembed(link)
-    except TypeError:
-        return
+    dl_url = Bypass().bypass_fembed(link)
     count = len(dl_url)
     lst_link = [dl_url[i] for i in dl_url]
     return lst_link[count - 1]

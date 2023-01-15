@@ -1,3 +1,4 @@
+import lk21
 from datetime import datetime
 from html import escape
 from math import ceil
@@ -512,6 +513,13 @@ def get_readable_time(seconds: int) -> str:
 def is_url(url: str):
     url = re_findall(URL_REGEX, url)
     return bool(url)
+
+
+def is_fembed(url: str):
+    test_link = lk21.Bypass().bypass_fembed(url)
+    if test_link:
+        return True
+    return False
 
 
 def is_gdrive_link(url: str):
