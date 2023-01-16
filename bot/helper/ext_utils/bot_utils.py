@@ -272,9 +272,7 @@ def get_readable_message():
                 globals()["COUNT"] -= STATUS_LIMIT
                 globals()["PAGE_NO"] -= 1
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += (
-                f"<b>╭ <a href='{download.message.link}'>{download.status()}</a>: </b>"
-            )
+            msg += f"<b><a href='{download.message.link}'>{download.status()}</a>: </b>"
             msg += f"<code>{escape(str(download.name()))}</code>"
             if download.status() not in [
                 MirrorStatus.STATUS_SEEDING,
@@ -288,7 +286,7 @@ def get_readable_message():
                 msg += f"\n<b>Process:</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}"
                 msg += f"\n<b>Speed:</b> {download.speed()}"
                 msg += f"\n<b>ETA:</b> {download.eta()}"
-                msg += f"<b>Elapsed: </b>{get_readable_time(time() - download.message.date.timestamp())}"
+                msg += f"<b> Elapsed: </b>{get_readable_time(time() - download.message.date.timestamp())}"
                 msg += f"\n<b>Engine :</b> {download.eng()}"
 
                 if hasattr(download, "seeders_num"):
@@ -356,8 +354,7 @@ def get_readable_message():
 
         bmsg = f"<b>CPU:</b> {cpu_percent()}% | <b>FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
         bmsg += f"\n<b>RAM:</b> {virtual_memory().percent}% | <b>UPTIME:</b> {get_readable_time(time() - botStartTime)}"
-        bmsg += f"\n<b>🔻 DL:</b> {get_readable_file_size(dl_speed)}/s"
-        bmsg += f"\n<b>🔺 UL:</b> {get_readable_file_size(up_speed)}/s"
+        bmsg += f"\n<b>DL:</b> {get_readable_file_size(dl_speed)}/s | <b>UL:</b> {get_readable_file_size(up_speed)}/s"
 
         buttons = ButtonMaker()
         buttons.sbutton("Refresh", "status refresh")
