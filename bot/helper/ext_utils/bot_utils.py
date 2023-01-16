@@ -42,45 +42,32 @@ PAGES = 0
 
 
 class MirrorStatus:
-    if config_dict["EMOJI_THEME"]:
-        STATUS_UPLOADING = "📤 Upload"
-        STATUS_DOWNLOADING = "📥 Download"
-        STATUS_CLONING = "♻️ Clone"
-        STATUS_QUEUEDL = "💤 QueueDl"
-        STATUS_QUEUEUP = "💤 QueueUp"
-        STATUS_PAUSED = "⛔️ Pause"
-        STATUS_ARCHIVING = "🔐 Archive"
-        STATUS_EXTRACTING = "📂 Extract"
-        STATUS_SPLITTING = "✂️ Split"
-        STATUS_CHECKING = "📝 CheckUp"
-        STATUS_SEEDING = "🌧 Seed"
-        STATUS_CONVERTING = "↔️ Convert"
-    else:
-        STATUS_UPLOADING = "Upload"
-        STATUS_DOWNLOADING = "Download"
-        STATUS_CLONING = "Clone"
-        STATUS_QUEUEDL = "QueueDl"
-        STATUS_QUEUEUP = "QueueUp"
-        STATUS_PAUSED = "Pause"
-        STATUS_ARCHIVING = "Archive"
-        STATUS_EXTRACTING = "Extract"
-        STATUS_SPLITTING = "Split"
-        STATUS_CHECKING = "CheckUp"
-        STATUS_SEEDING = "Seed"
-        STATUS_CONVERTING = "↔️ Convert"
+
+    STATUS_UPLOADING = "Upload"
+    STATUS_DOWNLOADING = "Download"
+    STATUS_CLONING = "Clone"
+    STATUS_QUEUEDL = "QueueDl"
+    STATUS_QUEUEUP = "QueueUp"
+    STATUS_PAUSED = "Pause"
+    STATUS_ARCHIVING = "Archive"
+    STATUS_EXTRACTING = "Extract"
+    STATUS_SPLITTING = "Split"
+    STATUS_CHECKING = "CheckUp"
+    STATUS_SEEDING = "Seed"
+    STATUS_CONVERTING = "↔️ Convert"
 
 
 class EngineStatus:
-    STATUS_ARIA = "Aria2c📶"
-    STATUS_GD = "Google Api♻️"
-    STATUS_MEGA = "MegaSDK⭕️"
-    STATUS_QB = "qBittorrent🦠"
-    STATUS_TG = "Pyrogram💥"
-    STATUS_YT = "YT-dlp🌟"
-    STATUS_EXT = "Extract | pExtract⚔️"
-    STATUS_SPLIT_MERGE = "FFmpeg🍿"
-    STATUS_ZIP = "p7zip🛠"
-    STATUS_QUEUE = "Sleep💤"
+    STATUS_ARIA = "Aria2c"
+    STATUS_GD = "Google Client"
+    STATUS_MEGA = "MegaSDK"
+    STATUS_QB = "qBittorrent"
+    STATUS_TG = "Pyrogram"
+    STATUS_YT = "YT-dlp"
+    STATUS_EXT = "Extract | pExtract"
+    STATUS_SPLIT_MERGE = "FFmpeg"
+    STATUS_ZIP = "p7zip"
+    STATUS_QUEUE = "Sleep"
 
 
 SIZE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB"]
@@ -269,11 +256,8 @@ def get_progress_bar_string(status):
     p = 0 if total == 0 else round(completed * 100 / total)
     p = min(max(p, 0), 100)
     cFull = p // 8
-    cPart = p % 8 - 1
-    p_str = config_dict["FINISHED_PROGRESS_STR"] * cFull
-    if cPart >= 0:
-        p_str += config_dict["MULTI_WORKING_PROGRESS_STR"][cPart]
-    p_str += config_dict["UN_FINISHED_PROGRESS_STR"] * (12 - cFull)
+    p_str = "■" * cFull
+    p_str += "□" * (12 - cFull)
     return f"[{p_str}]"
 
 

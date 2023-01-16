@@ -50,10 +50,10 @@ if DATABASE_URL is not None:
     ):  # retrun config dict (all env vars)
         environ["UPSTREAM_REPO"] = config_dict["UPSTREAM_REPO"]
         environ["UPSTREAM_BRANCH"] = config_dict["UPSTREAM_BRANCH"]
-        environ["UPDATE_PACKAGES"] = config_dict["UPDATE_PACKAGES"]
+        environ["UPDATE_PACKAGES"] = config_dict.get["UPDATE_PACKAGES", "False"]
     conn.close()
 
-UPDATE_PACKAGES = environ.get("UPDATE_PACKAGES", "False")
+UPDATE_PACKAGES = environ.get("UPDATE_PACKAGES", "True")
 if UPDATE_PACKAGES.lower() == "true":
     packages = [dist.project_name for dist in working_set]
     scall("pip install " + " ".join(packages), shell=True)
