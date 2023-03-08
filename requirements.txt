@@ -1,0 +1,5 @@
+aiopath 
+python-dotenv
+pyrogram
+tgcrypto
+uvloop
